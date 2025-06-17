@@ -1,6 +1,13 @@
+from stats import char_count, word_count
+import sys
+
 def main():
-    book_name = "frankenstein"
-    book_path = "books/" + book_name + ".txt"
+    if len(sys.argv) <= 1:
+        print("Usage: python3 main.py <path_to_book>")
+        sys.exit(1)
+    
+    book_name = sys.argv[1].split("/")[-1]
+    book_path = sys.argv[1]
     
     title = get_book(book_path)
     sumary(book_name, word_count(title), char_count(title))
@@ -14,25 +21,9 @@ def sumary(b_name, w_count, dict):
     
     for i, j in dict_to_list:
         if i.isalpha():
-            print(f"The '{i}' character was found {j} times")
+            print(f"{i}: {j}")
 
     print(f"\n--- End report ---\n")
-
-def char_count(text):
-    words = {}
-
-    for i in text:
-        char = i.lower()
-
-        if char in words:
-            words[char] += 1
-        else:
-            words[char] = 1
-
-    return words
-
-def word_count(title):
-    return len(title.split())
 
 def get_book(title):
     with open(title) as f:
